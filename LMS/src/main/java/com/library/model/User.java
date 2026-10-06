@@ -26,4 +26,16 @@ public class User {
     public List<Book> getBorrowedBooks() {
         return borrowedBooks;
     }
+    public boolean canBorrowBook() {
+        return borrowedBooks.size() < 3;
+    }
+    public void borrowBook(Book book) {
+        borrowedBooks.add(book);
+    }
+    public boolean hasBorrowed(Book book) {
+        return borrowedBooks.contains(book);
+    }
+    public void returnBook(Book book) {
+        borrowedBooks.remove(book);
+    }
 }
