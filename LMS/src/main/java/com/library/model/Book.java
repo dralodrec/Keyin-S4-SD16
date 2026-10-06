@@ -54,3 +54,7 @@ public class Book {
         return "Book [Isbn=" + Isbn + ", Title=" + Title + ", Author=" + Author + ", category=" + category + ", isAvailable=" + isAvailable + "]";
     }
 }
+
+//book.borrow();
+//book.returnBook();
+//book.isAvailable();
