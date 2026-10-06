@@ -10,6 +10,8 @@ public class User {
 
     //private static final int MAX_BOOKS = 3;
 
+    //public record User(int id, String name, List<Book> borrowedBooks) {
+
     public User(int id, String name, List<Book> borrowedBooks) {
         this.id = id;
         this.name = name;
