@@ -9,15 +9,15 @@ public class LibraryRepository {
     private final List<Book> books = new ArrayList<>();
     private final List<User> users = new ArrayList<>();
 
-    public LibraryRepository() {
-        // Initialize the repository with some sample data
-        books.add(new Book("978-3-16-148410-0", "Book 1", "Author 1", "Fiction", false));
-        books.add(new Book("978-1-23-456789-7", "Book 2", "Author 2", "Non-Fiction", false));
-        books.add(new Book("978-0-12-345678-9", "Book 3", "Author 3", "Science", false));
-
-        users.add(new User(1, "User 1", new ArrayList<>()));
-        users.add(new User(2, "User 2", new ArrayList<>()));
-    }
+//    public LibraryRepository() {
+//        // Initialize the repository with some sample data
+//        books.add(new Book("111", "Book 1", "Author 1", "Fiction", false));
+//        books.add(new Book("112", "Book 2", "Author 2", "Non-Fiction", false));
+//        books.add(new Book("113", "Book 3", "Author 3", "Science", false));
+//
+//        users.add(new User(1, "User 1", new ArrayList<>()));
+//        users.add(new User(2, "User 2", new ArrayList<>()));
+//    }
 
     public void addBook(Book book) {
         books.add(book);
@@ -51,5 +51,9 @@ public class LibraryRepository {
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public List<Book> getAllBooks() {
+        return new ArrayList<>(books);
     }
 }
