@@ -15,9 +15,7 @@ public class Book {
         this.isAvailable = isAvailable;
     }
  
-    public String getIsbn() {
-        return Isbn;
-    }
+    public String getIsbn() { return Isbn;}
     public void setIsbn(String isbn) {
         Isbn = isbn;
     }
@@ -42,10 +40,9 @@ public class Book {
     public boolean isAvailable() {
         return isAvailable;
     }
-     public void borrow() {
+    public void borrow() {
         isAvailable = false;
     }
-
     public void returnBook() {
         isAvailable = true;
     }
