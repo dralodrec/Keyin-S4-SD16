@@ -50,9 +50,7 @@ public class LibraryTest {
                 )
         );
 
-        assertEquals(
-                1,
-                service.getAllBooks().size()
+        assertEquals( 1, service.getAllBooks().size()
         );
     }
 
@@ -76,12 +74,172 @@ public class LibraryTest {
         assertNotNull(result);
     }
 
+
     @Test
     void invalidIsbnShouldReturnNull() {
 
         Book result = service.searchByIsbn("999");
 
         assertNull(result); //
+    }
+
+
+    @Test
+    void searchShouldFindBookByTitle() {
+
+        service.addBook(
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        true
+                )
+        );
+
+        List<Book> results = service.searchByTitle("Clean");
+
+        assertEquals( 1, results.size());
+    }
+
+
+    @Test
+    void searchShouldFindBookByAuthor() {
+
+        service.addBook(
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        false
+                )
+        );
+
+        List<Book> results = service.searchByAuthor("Robert");
+
+        assertFalse(results.isEmpty());
+    }
+
+    @Test
+    void searchShouldFindBookByCategory() {
+
+        service.addBook(
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        true
+                )
+        );
+
+        List<Book> results = service.searchByCategory("Programming");
+
+        assertEquals(1,results.size());
+    }
+
+
+    @Test
+    void searchShouldIgnoreCase() {
+
+        service.addBook(
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        true
+                )
+        );
+
+        List<Book> results = service.searchByTitle("CLEAN");
+
+        assertFalse(results.isEmpty());
+    }
+
+
+    @Test
+    void searchShouldReturnEmptyListWhenNotFound() {
+
+        service.addBook(
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        false
+                )
+        );
+
+        List<Book> results = service.searchByTitle("Cleaned");
+
+        assertTrue(results.isEmpty());
+    }
+
+
+    @Test
+    void userShouldBeAbleToBorrowBook() {
+
+        User user =
+                new User(
+                        1,
+                        "John",
+                        null
+                );
+
+        Book book =
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        true
+                );
+
+        service.addUser(user);
+        service.addBook(book);
+
+        boolean result =
+                service.borrowBook(
+                        1,
+                        "001"
+                );
+
+        assertTrue(result);
+    }
+
+
+    @Test
+    void borrowedBookShouldBecomeUnavailable() {
+
+        User user =
+                new User(
+                        1,
+                        "John",
+                        null
+                );
+
+        Book book =
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        false
+                );
+
+        service.addUser(user);
+        service.addBook(book);
+
+        service.borrowBook(
+                1,
+                "001"
+        );
+
+        assertFalse(
+                book.isAvailable()
+        );
     }
 
 }
