@@ -240,4 +240,151 @@ public class LibraryTest {
         assertFalse(book.isAvailable());
     }
 
+
+    @Test
+    void unavailableBookCannotBeBorrowedTwice() {
+
+        User user1 =
+                new User(1, "John",0);
+
+        User user2 =
+                new User(2, "Mary",0);
+
+        Book book =
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        true
+                );
+
+        service.addUser(user1);
+        service.addUser(user2);
+        service.addBook(book);
+
+        service.borrowBook(
+                1,
+                "001"
+        );
+
+        boolean secondBorrow =
+                service.borrowBook(
+                        2,
+                        "001"
+                );
+
+        assertFalse(secondBorrow);
+    }
+
+    @Test
+    void returnedBookShouldBecomeAvailable() {
+
+        User user =
+                new User(1, "John",2);
+
+        Book book =
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        false
+                );
+
+        service.addUser(user);
+        service.addBook(book);
+
+        service.borrowBook(
+                1,
+                "001"
+        );
+
+        service.returnBook(
+                1,
+                "001"
+        );
+
+        assertTrue(
+                book.isAvailable()
+        );
+    }
+
+    @Test
+    void userCannotBorrowMoreThanThreeBooks() {
+
+        User user =
+                new User(1, "John",1);
+
+        service.addUser(user);
+
+        for (int i = 1; i <= 4; i++) {
+
+            service.addBook(
+                    new Book(
+                            "00" + i,
+                            "Book " + i,
+                            "Author",
+                            "Category",
+                            true
+                    )
+            );
+        }
+
+        assertTrue(
+                service.borrowBook(
+                        1,
+                        "001"
+                )
+        );
+
+        assertTrue(
+                service.borrowBook(
+                        1,
+                        "002"
+                )
+        );
+
+        assertTrue(
+                service.borrowBook(
+                        1,
+                        "003"
+                )
+        );
+
+        assertFalse(
+                service.borrowBook(
+                        1,
+                        "004"
+                )
+        );
+    }
+
+    @Test
+    void userCannotReturnBookTheyDidNotBorrow() {
+
+        User user =
+                new User(1, "John",1);
+
+        Book book =
+                new Book(
+                        "001",
+                        "Clean Code",
+                        "Robert Martin",
+                        "Programming",
+                        false
+                );
+
+        service.addUser(user);
+        service.addBook(book);
+
+        boolean result =
+                service.returnBook(
+                        1,
+                        "001"
+                );
+
+        assertFalse(result);
+    }
+
 }
