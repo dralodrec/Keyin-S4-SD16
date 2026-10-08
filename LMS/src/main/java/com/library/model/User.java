@@ -1,5 +1,6 @@
 package com.library.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -8,15 +9,16 @@ public class User {
 
     private final List<Book> borrowedBooks;
 
-    //private static final int MAX_BOOKS = 3;
+    private static final int MAX_BOOKS = 3;
 
     //public record User(int id, String name, List<Book> borrowedBooks) {
 
-    public User(int id, String name, List<Book> borrowedBooks) {
+    public User(int id, String name, int borrowedBooks) {
         this.id = id;
         this.name = name;
-        this.borrowedBooks = borrowedBooks;
+        this.borrowedBooks = new ArrayList<>();
     }
+ 
     public int getId() {
         return id;
     }
@@ -28,7 +30,7 @@ public class User {
     }
 
     public boolean canBorrowBook() {
-        return borrowedBooks.size() < 3;
+        return borrowedBooks.size() < MAX_BOOKS;
     }
     public void borrowBook(Book book) {
         borrowedBooks.add(book);

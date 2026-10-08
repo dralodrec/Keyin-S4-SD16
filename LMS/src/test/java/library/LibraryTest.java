@@ -185,7 +185,7 @@ public class LibraryTest {
                 new User(
                         1,
                         "John",
-                        null
+                        0
                 );
 
         Book book =
@@ -217,7 +217,7 @@ public class LibraryTest {
                 new User(
                         1,
                         "John",
-                        null
+                        3
                 );
 
         Book book =
@@ -237,9 +237,7 @@ public class LibraryTest {
                 "001"
         );
 
-        assertFalse(
-                book.isAvailable()
-        );
+        assertFalse(book.isAvailable());
     }
 
 }

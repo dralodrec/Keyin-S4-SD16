@@ -110,7 +110,7 @@ public class Main {
             System.out.print("User name: ");
             String name = scanner.nextLine();
 
-            service.addUser(new User(id, name, null)
+            service.addUser(new User(id, name, 0)
             );
 
             System.out.println("User added successfully.");
