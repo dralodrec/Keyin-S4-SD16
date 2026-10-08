@@ -289,7 +289,7 @@ public class LibraryTest {
                         "Clean Code",
                         "Robert Martin",
                         "Programming",
-                        false
+                        true
                 );
 
         service.addUser(user);
