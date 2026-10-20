@@ -1,2 +1,0 @@
-Guided Lab: Exploring AWS Identity and Access Management (IAM) 	- DONE
-Module 3 Knowledge Check					- DONE
