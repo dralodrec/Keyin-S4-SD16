@@ -1,223 +1,87 @@
-# LMS (Library Management System) 
-<br>
+# Library Management System
+| Test                                          | What it verifies                          | Scenario |
+
+| `newBookShouldBeAvailable()`                  | New books start as available              | Passed   |
+| `addBookShouldStoreBook()`                    | Repository/service stores a book          | Passed   |
+| `findBookByIsbnShouldReturnBook()`            | Existing ISBN can be found                | Passed   |
+| `invalidIsbnShouldReturnNull()`               | Unknown ISBN is handled safely            | Failed   |
+| `searchShouldFindBookByTitle()`               | Search by title works                     | Passed   |
+| `searchShouldFindBookByAuthor()`              | Search by author works                    | Passed   |
+| `searchShouldFindBookByCategory()`            | Search by category works                  | Passed   |
+| `searchShouldIgnoreCase()`                    | Search is case-insensitive                | Passed   |
+| `searchShouldReturnEmptyListWhenNotFound()`   | Missing search result is handled          | Failed   |
+| `userShouldBeAbleToBorrowBook()`              | Valid user can borrow available book      | Passed   |
+| `borrowedBookShouldBecomeUnavailable()`       | Availability changes after borrow         | Passed   |
+| `unavailableBookCannotBeBorrowedTwice()`      | Same book cannot be borrowed twice        | Failed   |
+| `returnedBookShouldBecomeAvailable()`         | Return restores availability              | Passed   |
+| `userCannotBorrowMoreThanThreeBooks()`        | Borrowing limit is enforced               | Failed   |
+| `userCannotReturnBookTheyDidNotBorrow()`      | Invalid return is rejected                | Failed   |
+
 
 ## Features
-    The application supports:
-    - Adding books
-    - Adding library users
-    - Searching books by title
-    - Searching books by author
-    - Searching books by ISBN
-    - Searching books by category
-    - Viewing all books
-    - Borrowing books
-    - Returning books
-    - Checking book availability
-    - Enforcing a borrowing limit
-    - Preventing unavailable books from being borrowed twice
-<br>
+  List the main functions of the application, such as:
+  - Add books
+  - Add users
+  - Search books by title, author, ISBN, or category
+  - Borrow books
+  - Return books
+  - Check book availability
+  - Enforce borrowing limits
+
 
 ## Architecture
-    The project uses a simple layered architecture:
-    Main
+  Main
     ↓
-    LibraryService
+  LibraryService
     ↓
-    LibraryRepository
+  LibraryRepository
     ↓
-    Book / User
-<br>
+  Book / User
+
 
 ## Project Structure
-    LMS/
-    ├── .github/
-    │   └── workflows/
-    │       └── maven.yml
-    │
-    ├── src/
-    │   ├── main/
-    │   │   └── java/
-    │   │       └── com/library/
-    │   │           ├── Main.java
-    │   │           ├── model/
-    │   │           │   ├── Book.java
-    │   │           │   └── User.java
-    │   │           ├── repository/
-    │   │           │   └── LibraryRepository.java
-    │   │           └── service/
-    │   │               └── LibraryService.java
-    │   │
-    │   └── test/
-    │       └── java/
-    │           └── com/library/
-    │               └── LibraryTest.java
-    │
-    ├── pom.xml
-    ├── .gitignore
-    └── README.md
-<br>
+  src/main/java/com/library/
+    - Main.java
+    - model/
+    - repository/
+    - service/
 
-## Clean Code Practices
-    This is probably the most important section to improve because your instructor specifically mentioned:
-    Missing screenshots showing clean code in your work.
-
-    You should include at least three examples from your own source code and place a screenshot under each example.
-    Clean Code Example 1 — Single Responsibility
-    Each class has one main responsibility.
-
-        For example:
-        Main
-        → handles user interaction
-
-        LibraryService
-        → handles application rules
-
-        LibraryRepository
-        → handles data storage
-
-        Book / User
-        → represent application data
-
-Instead of placing all application logic inside Main.java, the logic was divided into separate classes.
-
-    For example, Main calls:
-    boolean success = service.borrowBook(userId, isbn);
-
-but the actual borrowing rules are handled inside LibraryService.
-This improves readability, maintainability, and testability.
-
-    Screenshot to be added:
+  src/test/java/com/library/
+    - LibraryTest.java
 
 
-### Clean Code Example 2 — Descriptive Method Names
-The project uses method names that describe their purpose.
-
-    Examples:
-    searchByTitle()
-    searchByAuthor()
-    findBookByIsbn()
-    borrowBook()
-    returnBook()
-    canBorrowBook()
-    hasBorrowed()
-
-    For example:
-    public boolean canBorrowBook() {
-        return borrowedBooks.size() < MAX_BOOKS;
-    }
-
-The method name clearly communicates the rule being checked.
-This is better than vague names such as:
-check()
-process()
-doThing()
-
-because another developer can understand the intent without reading the entire method.
-
-    Screenshot to be added:
+## How to Run
+  - mvn clean test
+  - mvn clean package
 
 
-### Clean Code Example 3 — Avoiding Magic Numbers
-The borrowing limit is stored as a constant:
+## Documentation:
+1. Explain how your code meets clean code practices by using at least 3 examples of your own code. Screenshots should be used
+  clean code practices by separating different responsibilities into different classes and packages. The application is organized   into model, repository, and service packages while Main.java is responsible for the menu and user interaction.
+   
+2. Explain your project. What it does, how it works. Explain the test cases you used
+  This project is a console-based Library Management System written in Java. This allows a user to manage books and library users. functionality includes adding books, adding users, searching the catalog, borrowing books, returning books and displaying books, checking book availability, and enforcing a borrowing limit.
 
-    private static final int MAX_BOOKS = 3;
+3. Outline the needed dependencies. Where did you get them from?
+  JUnit 5 provides a testing framework while Maven framework adds dependency and build automation. Maven Surefire Plugin allows to locate and execute the JUnit testing.
 
-instead of writing:
-
-    borrowedBooks.size() < 3
-
-throughout the program.
-The method then becomes:
-
-    public boolean canBorrowBook() {
-        return borrowedBooks.size() < MAX_BOOKS;
-    }
-
-This makes the business rule easier to understand and easier to change.
-If the borrowing limit changes later, only one value needs to be updated.
-
-    Screenshot to be added:
-
-
-### Additional Clean Coding Improvement
-Here is another good clean-code idea you can add if you want stronger evidence.
-
-Constructor Injection
-
-    LibraryService receives its repository through its constructor:
-    private final LibraryRepository repo;
-
-    public LibraryService(LibraryRepository repo) {
-        this.repo = repo;
-    }
-
-This is cleaner than creating the repository directly inside the service:
-
-    private LibraryRepository repo =
-            new LibraryRepository();
-
-Constructor injection makes dependencies explicit.
-It also makes unit testing easier because the test can create a new repository and pass it to the service:
-
-    repo = new LibraryRepository();
-    service = new LibraryService(repo);
-
-This also helped fix the earlier NullPointerException caused by an uninitialized repository.
-
-    Screenshot to be added:
-<br>
-
-## How the Application Works
-When the program starts, the user is presented with a menu.
-
-    Example:
-    === Library Management System ===
-
-    1. Add Book
-    2. Add User
-    3. Search Catalog
-    4. Borrow Book
-    5. Return Book
-    6. Show All Books
-    7. Exit
-
-When a user chooses an operation, Main.java collects the required input and calls the appropriate method in LibraryService.
-
-    For example:
-    service.borrowBook(userId, isbn);
-
-The service then retrieves the required information from the repository.
-
-    The borrowing process follows these rules:
-    Find user
-    ↓
-    Find book
-    ↓
-    Check book availability
-    ↓
-    Check borrowing limit
-    ↓
-    Borrow book
-
-If any rule fails, the operation returns false.
-<br>
-
-## Unit Test
-    | Test                                          | What it verifies                          | Scenario |
-
-    | `newBookShouldBeAvailable()`                  | New books start as available              | Passed   |
-    | `addBookShouldStoreBook()`                    | Repository/service stores a book          | Passed   |
-    | `findBookByIsbnShouldReturnBook()`            | Existing ISBN can be found                | Passed   |
-    | `invalidIsbnShouldReturnNull()`               | Unknown ISBN is handled safely            | Failed   |
-    | `searchShouldFindBookByTitle()`               | Search by title works                     | Passed   |
-    | `searchShouldFindBookByAuthor()`              | Search by author works                    | Passed   |
-    | `searchShouldFindBookByCategory()`            | Search by category works                  | Passed   |
-    | `searchShouldIgnoreCase()`                    | Search is case-insensitive                | Passed   |
-    | `searchShouldReturnEmptyListWhenNotFound()`   | Missing search result is handled          | Failed   |
-    | `userShouldBeAbleToBorrowBook()`              | Valid user can borrow available book      | Passed   |
-    | `borrowedBookShouldBecomeUnavailable()`       | Availability changes after borrow         | Passed   |
-    | `unavailableBookCannotBeBorrowedTwice()`      | Same book cannot be borrowed twice        | Failed   |
-    | `returnedBookShouldBecomeAvailable()`         | Return restores availability              | Passed   |
-    | `userCannotBorrowMoreThanThreeBooks()`        | Borrowing limit is enforced               | Failed   |
-    | `userCannotReturnBookTheyDidNotBorrow()`      | Invalid return is rejected                | Failed   |
-
+4. If you had any problems the QAP please explain what happened.
+  Encountered a lot of problem that may connect to users and repository. When using the services without providing it with a    LibraryRepository, tested a couple of multiple constructor injection that ensures the services has access to a valid repository.
+  
+  private final LibraryRepository repo;
+  
+  public LibraryService(LibraryRepository repo) {
+      this.repo = repo;
+  }
+  LibraryRepository repo = new LibraryRepository();
+  LibraryService service = new LibraryService(repo);
+  
+  Another problem occurred during the testing phase, "userShouldBeAbleToBorrowBokk" because I used a List object supplied through the constructor which allowed a null list to be passed into the object. The problem was fixed by making User initialize its own list.
+   
+  private final List<Book> borrowedBooks;
+  
+  public User(int id, String name) {
+      this.id = id;
+      this.name = name;
+      this.borrowedBooks = new ArrayList<>();
+  }
